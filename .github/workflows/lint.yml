@@ -1,4 +1,4 @@
-name: Lint for Go code
+name: Linter for Go code
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
     lint:
-        runs-on: ubuntu-18-04
+        runs-on: ubuntu-latest
         steps:
             uses: actions/checkout@v2
             uses: actions/setup-go@v2
@@ -16,6 +16,6 @@ jobs:
                 go-version: '1.13.4'
             name: lint
                 run: |
-                curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.26.0
-                
-                golangci-lint run  
+                    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.26.0
+                    
+                    golangci-lint run
