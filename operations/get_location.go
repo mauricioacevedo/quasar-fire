@@ -61,9 +61,5 @@ func conditions(sats []structs.Satellite) bool {
 	}
 
 	d3 := u.Distance(sats[0].Location, sats[2].Location)
-	if d3 > sats[0].Distance+sats[2].Distance {
-		return false
-	}
-
-	return true
+	return !(d3 > sats[0].Distance+sats[2].Distance)
 }
