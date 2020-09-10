@@ -40,6 +40,12 @@ The repository development workflow will be based in the gitflow workflow. For m
     - Dockerhub push: a docker image is build and published to Docker hub
     - ECS Deploy: the base project is deployed to 
 
+## Whats next?
+- Support for multiple Resistance satellites.
+- Improve algorithms for message interpretation.
+- load tests.
+- Sync satellites info with goroutines.
+
 ## Authors
 
 #### Mauricio Acevedo - mauricio.acevedo@gmail.com
