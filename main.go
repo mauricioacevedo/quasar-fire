@@ -20,7 +20,7 @@ func main() {
 
 	locationGroup := e.Group("", middlewares.HeadersCheck)
 	locationGroup.POST("/topsecret", c.PostTopSecret)
-	e.POST("/health-check", func(c echo.Context) error {
+	e.GET("/health-check", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Never tell me the odds!")
 	})
 	e.Logger.Fatal(e.Start(port))
