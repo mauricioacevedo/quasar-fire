@@ -2,9 +2,17 @@ package services
 
 import (
 	"fmt"
+	"log"
+	"time"
 
+	"github.com/patrickmn/go-cache"
 	"github.com/quasar-fire/operations"
 	st "github.com/quasar-fire/structs"
+)
+
+var (
+	c        = cache.New(5*time.Minute, 10*time.Minute)
+	cachekey = "cache/topsecret_split"
 )
 
 func TopSecretService(req st.TopSecretRequest) (*st.TopSecretResponse, error) {
@@ -69,6 +77,9 @@ func TopSecretSplitPostService(satelliteName string, req st.TopSecretRequestSpli
 		Message: fmt.Sprintf("Ok"),
 	}
 
+	//reset cache
+	c.Delete(cachekey)
+
 	return &res, nil
 }
 
@@ -86,10 +97,22 @@ func TopSecretSplitResetService() (*st.TopSecretPostResponse, error) {
 		Message: fmt.Sprintf("Ok"),
 	}
 
+	//reset cache
+	c.Delete(cachekey)
+
 	return &res, nil
 }
 
 func TopSecretSplitGetService() (*st.TopSecretResponse, error) {
+
+	//cache
+	if x, found := c.Get(cachekey); found {
+		ress := x.(*st.TopSecretResponse)
+		log.Println("Cache Hit!!")
+
+		return ress, nil
+		// ...
+	}
 
 	sats := operations.GetAllSatelliteSplit()
 
@@ -118,6 +141,8 @@ func TopSecretSplitGetService() (*st.TopSecretResponse, error) {
 		},
 		Message: message,
 	}
+
+	c.Set(cachekey, &res, cache.DefaultExpiration)
 
 	return &res, nil
 }
