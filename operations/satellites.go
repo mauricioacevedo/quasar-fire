@@ -7,11 +7,12 @@ import (
 )
 
 var (
-	kenobi     = []float32{-500, -200}
-	skywalker  = []float32{100, -100}
-	sato       = []float32{500, 100}
-	sats       = StartResistance()
-	onlineSats = []st.Satellite{}
+	kenobi       = []float32{-500, -200}
+	skywalker    = []float32{100, -100}
+	sato         = []float32{500, 100}
+	sats         = StartResistance()
+	onlineSats   = []st.Satellite{}
+	onlineSatsV2 = StartResistance()
 )
 
 // StartResistance initialize satellites with the default config
@@ -27,13 +28,6 @@ func StartResistance() []st.Satellite {
 func InitSatelites(req st.TopSecretRequest) ([]st.Satellite, error) {
 
 	satellites := []st.Satellite{}
-
-	/**** TODO: Note to future me: i think we need this in the future.
-	if len(req.Satellites) != len(sats) {
-		err := fmt.Errorf("Number of satellites is different.. is lord Vader trying to hack into our systems?")
-
-		return nil, err
-	}*/
 
 	for _, s := range req.Satellites {
 
@@ -52,6 +46,65 @@ func InitSatelites(req st.TopSecretRequest) ([]st.Satellite, error) {
 	onlineSats = satellites
 
 	return satellites, nil
+}
+
+func GetOneSatelliteSplit(name string) (st.Satellite, error) {
+	return FindSatelliteByName(name, onlineSatsV2)
+}
+
+func UpdateSatellitesSplit(satUpdated st.Satellite) []st.Satellite {
+	satsNew := []st.Satellite{}
+
+	for _, s := range onlineSatsV2 {
+		if s.Name == satUpdated.Name {
+			s = satUpdated
+		}
+
+		satsNew = append(satsNew, s)
+	}
+
+	onlineSatsV2 = satsNew
+
+	return onlineSatsV2
+}
+
+func ResetSatelliteSplit() ([]st.Satellite, error) {
+	onlineSatsV2 = StartResistance()
+
+	for _, s := range onlineSatsV2 {
+
+		sat, err := FindSatelliteByName(s.Name, onlineSatsV2)
+
+		// NO!!!
+		if err != nil {
+			return nil, err
+		}
+
+		sat.Distance = s.Distance
+		sat.Message = s.Message
+		onlineSatsV2 = append(onlineSatsV2, sat)
+	}
+
+	return onlineSatsV2, nil
+
+}
+
+func GetAllSatelliteSplit() []st.Satellite {
+
+	return onlineSatsV2
+}
+
+func InitSatelitesFromDB(dbSats []st.Satellite) ([]st.Satellite, error) {
+
+	if len(dbSats) != len(sats) {
+		err := fmt.Errorf("Number of satellites is different.. is lord Vader trying to hack into our systems?")
+
+		return nil, err
+	}
+
+	onlineSats = dbSats
+
+	return dbSats, nil
 }
 
 // NewSatellite constructor for type Satellite

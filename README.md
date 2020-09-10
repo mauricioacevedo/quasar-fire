@@ -5,6 +5,8 @@ Repositorio para prueba Fuego de Quasar
 - GetLocation: retrieve the posible location of the Imperial ship
 - GetMessage: using the Resistance satellites the service returns the message that was broadcast by the Imperial ship
 - POST - /topsecret: service used to obtain the complete information of the Imperial ship 
+- POST - /topsecret_split: service used to setup information for one satellite 
+- GET - /topsecret_split: retrieve the posible location of the Imperial ship  with the split information
 
 
 ## How to use

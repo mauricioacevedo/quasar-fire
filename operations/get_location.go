@@ -19,6 +19,17 @@ func GetLocation(distances ...float32) (x, y float32) {
 	return x, y
 }
 
+func GetLocationSplit(distances ...float32) (x, y float32) {
+
+	x, y, err := solution(onlineSatsV2)
+
+	if err != nil {
+		return 0, 0
+	}
+
+	return x, y
+}
+
 func solution(sats []structs.Satellite) (x, y float32, err error) {
 
 	if !conditions(sats) {
