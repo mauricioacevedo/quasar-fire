@@ -1,0 +1,24 @@
+name: Publish to docker Image
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+    ## check out project
+    - uses: actions/checkout@v2
+    
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+    ## Publishes to DockerHub
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        ## the name of our image
+        name: macevedg/quasar-fire
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
