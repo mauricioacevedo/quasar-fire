@@ -9,6 +9,7 @@ import (
 	"github.com/quasar-fire/structs"
 )
 
+// PostTopSecret retrieves location and message from a config input
 func PostTopSecret(ctx echo.Context) error {
 
 	var (
@@ -32,6 +33,7 @@ func PostTopSecret(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, res)
 }
 
+// PostTopSecretSplit load configuration for one satellite
 func PostTopSecretSplit(ctx echo.Context) error {
 
 	var (
@@ -45,6 +47,7 @@ func PostTopSecretSplit(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	//TODO: scheme validation
 	log.Println("[START] PostTopSecretSplit with..", secretRequest)
 
 	res, err := services.TopSecretSplitPostService(satelliteName, secretRequest)
@@ -56,6 +59,7 @@ func PostTopSecretSplit(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, res)
 }
 
+// TopSecretSplitReset leave with no distance and message to the topsecret_split satellites
 func TopSecretSplitReset(ctx echo.Context) error {
 
 	log.Println("[START] TopSecretSplitReset")
@@ -69,6 +73,7 @@ func TopSecretSplitReset(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, res)
 }
 
+// GetTopSecretSplit get location and posible message
 func GetTopSecretSplit(ctx echo.Context) error {
 
 	log.Println("[START] GetTopSecretSplit..")
